@@ -1,0 +1,119 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.dawnling.manypackage"
+        minSdkVersion 19
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        //必须要保证所有的flavor 都属于同一个维度  https://blog.csdn.net/kongty/article/details/78673933
+        flavorDimensions "default"
+    }
+    signingConfigs {
+        //app1签名
+        release1 {
+            storeFile file("app1.jks")
+            storePassword "123456"
+            keyAlias "app1"
+            keyPassword "123456"
+        }
+        //app2签名
+        release2 {
+            storeFile file("app2.jks")
+            storePassword "123456"
+            keyAlias "app2"
+            keyPassword "123456"
+        }
+    }
+    buildTypes {
+        release {
+            //生产环境
+            minifyEnabled false
+            shrinkResources false
+            //像Google Play强制要求开发者上传的应用必须是经过zipAlign的，zipAlign可以让安装包中的资源按4字节对齐，这样可以减少应用在运行时的内存消耗。
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            buildConfigField "int", "ENVIRONMENT", "1"
+//            //不同app图标，名称
+//            manifestPlaceholders = [app_icon: "@mipmap/logo1",
+//                                    app_name: "@string/app_name1"]
+        }
+        debug {
+            //测试环境
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            buildConfigField "int", "ENVIRONMENT", "2"
+//            //不同app图标，名称
+//            manifestPlaceholders = [app_icon: "@mipmap/logo1",
+//                                    app_name: "@string/app_name1_test"]
+        }
+//        release2 {
+//            //生产环境
+//            minifyEnabled false
+//            shrinkResources false
+//            //像Google Play强制要求开发者上传的应用必须是经过zipAlign的，zipAlign可以让安装包中的资源按4字节对齐，这样可以减少应用在运行时的内存消耗。
+//            zipAlignEnabled true
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            buildConfigField "int", "ENVIRONMENT", "1"
+//            //不同app图标，名称
+//            manifestPlaceholders = [app_icon: "@mipmap/logo2",
+//                                    app_name: "@string/app_name2"]
+//        }
+//        debug2 {
+//            //测试环境
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            buildConfigField "int", "ENVIRONMENT", "2"
+//            //不同app图标，名称
+//            manifestPlaceholders = [app_icon: "@mipmap/logo2",
+//                                    app_name: "@string/app_name2_test"]
+//        }
+    }
+    productFlavors {
+        app1 {
+            // 设置applicationId（这里很重要，两个相同applicationId的apk不同同时安装在同一台Android手机中）
+            applicationId "com.dawnling.manypackage"
+            versionCode 1
+            versionName "1.0.0"
+            signingConfig = signingConfigs.release1
+            // 定义app_icon字段，在AndroidManifest.xml文件中用到
+            manifestPlaceholders = [app_icon : "@mipmap/logo1" ,
+                                    app_name: "@string/app_name1",
+                                    umeg_key:"",
+                                    umeg_secret:""]
+            buildConfigField "int", "TYPE", "1"
+            buildConfigField "String", "APP_File_Provider", '"com.flavor.yourapp.fileprovider"'
+            buildConfigField "String", "BASE_SERVER_URL" , '"http://your/app/"'
+        }
+        app2 {
+            applicationId "com.dawnling.manypackage1"
+            versionCode 2
+            versionName "2.0.0"
+            signingConfig = signingConfigs.release2
+            manifestPlaceholders = [app_icon : "@mipmap/logo2",
+                                    app_name: "@string/app_name2",
+                                    umeg_key:"",
+                                    umeg_secret:""]
+            buildConfigField "int", "TYPE", "2"
+            buildConfigField "String", "APP_File_Provider", '"com.flavor.yourapp.fileprovider"'
+            buildConfigField "String", "BASE_SERVER_URL" , '"http://your/app/"'
+        }
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation 'com.blankj:utilcode:1.23.5'
+}
