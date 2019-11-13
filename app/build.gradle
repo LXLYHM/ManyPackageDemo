@@ -108,8 +108,8 @@ android {
     }
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            //渠道名${variant.productFlavors[0].name}，即helpapp 、manageapp 、workapp
-            //渠道名+环境${variant.name}，即helpappRelease或helpappDebug
+            //渠道名${variant.productFlavors[0].name}，即app1 、app2
+            //渠道名+环境${variant.name}，即app1Release或app1Debug
             //环境${variant.buildType.name}，即release或debug
             //输出apk名称为：渠道名+环境_版本名_时间.apk
             outputFileName = "${variant.name}_v${variant.versionName}_${new Date().format("yyyyMMdd")}.apk"
