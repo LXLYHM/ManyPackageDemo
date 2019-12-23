@@ -36,19 +36,19 @@ android {
             //像Google Play强制要求开发者上传的应用必须是经过zipAlign的，zipAlign可以让安装包中的资源按4字节对齐，这样可以减少应用在运行时的内存消耗。
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//            buildConfigField "int", "ENVIRONMENT", "1"
-//            //不同app图标，名称
-//            manifestPlaceholders = [app_icon: "@mipmap/logo1",
-//                                    app_name: "@string/app_name1"]
+            buildConfigField "int", "ENVIRONMENT", "1"
         }
         debug {
             //测试环境
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//            buildConfigField "int", "ENVIRONMENT", "2"
-//            //不同app图标，名称
-//            manifestPlaceholders = [app_icon: "@mipmap/logo1",
-//                                    app_name: "@string/app_name1_test"]
+            buildConfigField "int", "ENVIRONMENT", "2"
+        }
+        pro {
+            //仿真环境
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "int", "ENVIRONMENT", "3"
         }
 //        release2 {
 //            //生产环境
